@@ -114,7 +114,8 @@ input[type="text"]{
     margin: 0 auto;
 }
 .center{
-	display:inline;
+	
+	display:inline-table;
 	margin:2;
 	
 }
