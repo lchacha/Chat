@@ -61,20 +61,20 @@
 		socket.on('chat message',function(msg)
 		{//$('#messages').append($('<li>').text(msg));
 		messag = '<div style="float:right" style ="color:red">' + msg.timeTime + '</div><div style="font-style:italic">' + msg.nickname + '</div><br><div style="font-style:normal">' + msg.mes + '</div>';
-		$('#messages').append($('<li>').html(messag));
+		$('#messages').append($('<li >').html(messag));
 		
 		});
 		
 		socket.on('connMsg',function(msg)
 		{
 			message = "";
-			$('#messages').append($('<P>').text(msg));
+			$('#messages').append($('<P class="center">').text(msg));
 		});
 		
 		socket.on('disconnect',function(msg)
 		{
 			message = "";
-			$('#messages').append($('<P>').text(msg));
+			$('#messages').append($('<P class="center">').text(msg));
 		});
 	</script>
 </body>
