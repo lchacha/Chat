@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>Chat Room</title>
+	<meta charset="utf-8"><meta charset="utf-8">
+    
+	
+	<link rel="stylesheet" href="page.css">
+</head>
+
+<body>
+<div id="ex0">
+	<h2> Chat Room</h2>
+</div>
+<div id="ex1" >
+	<h3 >User Name: <span id="len"><%= username %></span></h3>
+	<ul class="center-div"  id="messages">
+	
+	 
+    </ul>
+	<form action="" role="form">
+		<span><input  STYLE="background-color:#EFFFFF;" class="height" type="text" id="songTextInput" size="60%" placeholder="Enter text"></span>
+		<button >Send</button>
+		
+	</form>
+	
+	
+	<ul id="playlist">
+	</ul>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+	<script>
+		function mesObj(name,message,timeT){
+		this.nickname = name;
+		this.mes = message;
+		this.timeTime=timeT;
+		}
+	var socket = io();
+		$('form').submit(
+		function(){
+			var timeT = new Date(Date.now());
+			var mess = $('#songTextInput').val();
+			var dateSt = timeT.toLocaleDateString();
+			var timeSt = timeT.toLocaleTimeString();
+			var stri = dateSt.concat(" ",timeSt);
+			//collect data from input
+			var username = $('#len').html();
+			var messa = new mesObj(username, mess,stri);
+			$('#songTextInput').val("");
+			socket.emit('chat message',messa);
+			//$('#songTextInput').val('');
+			// append the message to the user
+			messag = '<div style="float:right" style ="color:red">' + messa.timeTime + '</div><div style="font-style:italic">' + messa.nickname + '</div><br><div >' + messa.mes + '</div>';
+            $('#messages').append($('<li>').html(messag));
+			 
+			return false;
+		}
+		);
+		//capture an event message event
+		socket.on('chat message',function(msg)
+		{//$('#messages').append($('<li>').text(msg));
+		messag = '<div style="float:right" style ="color:red">' + msg.timeTime + '</div><div style="font-style:italic">' + msg.nickname + '</div><br><div style="font-style:normal">' + msg.mes + '</div>';
+		$('#messages').append($('<li>').html(messag));
+		
+		});
+		
+		socket.on('connMsg',function(msg)
+		{
+			message = "";
+			$('#messages').append($('<P>').text(msg));
+		});
+		
+		socket.on('disconnect',function(msg)
+		{
+			message = "";
+			$('#messages').append($('<P>').text(msg));
+		});
+	</script>
+</body>
+</html>
